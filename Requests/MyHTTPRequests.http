@@ -1,0 +1,27 @@
+GET http://localhost:8000//api/v1/reviews
+Accept: application/json
+Authorization: Basic {{username}} {{password}} //ALL REVIEWS
+###
+
+GET http://localhost:8000//api/v1/reviews/4
+Accept: application/json
+Authorization: Basic {{username}} {{password}} //ALL REVIEWS FOR THAT USER
+###
+
+PUT http://localhost:8000/api/v1/updateReview/40
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+Content-Type: application/json
+
+{
+  "rating": 1,
+  "comments": "eggseggs"
+}
+###
+
+DELETE http://localhost:8000/api/v1/deleteReview/40
+Accept: application/json
+Authorization: Basic {{username}} {{password}} //DELETE REVIEW BY ID
+###
+
+
