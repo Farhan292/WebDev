@@ -1,0 +1,114 @@
+.commentList {
+    list-style-type: none;
+}
+.comment {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.user-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-details {
+    text-align: left;
+}
+
+.username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-content {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.rating {
+    font-weight: bold;
+}
+
+.created-at {
+    color: #888;
+    font-size: 0.8em;
+}
+#filmImg{
+    height: 500px;
+    width: auto;
+    padding: 20px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+#filmBox
+{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+#filmList{
+    padding: 20px;
+}
+#filmDesc
+{
+    padding: 20px;
+    width: 400px;
+}
+body{
+    background-color: black;
+    color: white;
+}
+.headings{
+    text-align: center;
+}
+#filmInfo{
+    align-items: center;
+    justify-content: center;
+}
+.filmInfoItems{
+    font-weight: bold;
+    margin-left: 100px;
+}
+/* Review Form */
+#reviewForm{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.formField {
+    margin-bottom: 20px;
+}
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}

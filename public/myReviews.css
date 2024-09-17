@@ -1,0 +1,81 @@
+.rating-input {
+    display: flex;
+    align-items: center;
+}
+.rating-button {
+    width: 30px;
+    height: 100%;
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 5px;
+    cursor: pointer;
+    text-align: center;
+    background-color: black;
+    border-radius: 50%;
+}
+.rating-button:hover {
+    background-color: #888888;
+}
+.rating-input button:last-child {
+    margin-left: auto;
+}
+.ratingBox {
+    width: 50%;
+}
+body{
+    background-color: black;
+    color: white;
+    display: block;
+    align-items: center;
+}
+#myReviewsList {
+    margin-left: 30%;
+    margin-right: 30%;
+    text-align: center;
+}
+.button{
+    display: inline-block;
+    height: 30px;
+    width: 150px;
+    margin: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    font-size: large;
+    font-weight: bold;
+    color: white;
+    border-radius: 50px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    line-height: 30px;
+}
+.button:hover{
+    color: black;
+}
+#edit{
+    background-color: blue;
+}
+#edit:hover{
+    background-color: #3b82f6;
+}
+#delete{
+    background-color: red;
+}
+#delete:hover{
+    background-color: pink;
+}
+.comment{
+    background-color: rgb(24,24,24);
+    padding: 50px;
+    margin-top: 20px;
+    border: #888888;
+    border-radius: 10px;
+}
+.filmStuff {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: #424242;
+    border-radius: 10px;
+    padding: 20px;
+}
