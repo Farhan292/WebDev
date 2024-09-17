@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <body>
+    <div class="image-bar">
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/Inception.jpg') }}" alt="Image 1">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/shrek2.jpg') }}" alt="Image 2">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/HarryPottah.jpg') }}" alt="Image 3">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/Spiderman.jpg') }}" alt="Image 4">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/BlackPanther.jpg') }}" alt="Image 5">
+            </a>
+        </div>
+    </div>
+    <div class="image-bar">
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/DarkKnight.jpeg') }}" alt="Image 1">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/Lotr.jpg') }}" alt="Image 2">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/HungerGames.jpg') }}" alt="Image 3">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/StarWars.jpg') }}" alt="Image 4">
+            </a>
+        </div>
+        <div class="image-container">
+            <a href="{{ path('film') }}">
+                <img src="{{ asset('images/Titanic2.jpg') }}" alt="Image 5">
+            </a>
+        </div>
+    </div>
+    </body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: black;
+        }
+
+        .image-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .image-container {
+            flex: 1 1 20%;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .image-container {
+                flex: 1 1 50%;
+                height: auto;
+            }
+        }
+        @media (max-width: 576px) {
+            .image-container {
+                flex: 1 1 100%;
+                height: auto;
+            }
+        }
+        @media (min-width: 576px) and (max-width: 890px) {
+            .image-container {
+                flex: 1 1 33.33%;
+                height: auto;
+            }
+        }
+    </style>
+{% endblock %}

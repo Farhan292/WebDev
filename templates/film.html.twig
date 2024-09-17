@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ asset('film.css') }}">
+        <link rel="stylesheet" href="{{ asset('showFilm.css') }}">
+    </head>
+    <body>
+    <div id="searchBox">
+        <div class="search-bar">
+            <form action="{{ path('searchFilms') }}" method="get">
+                <input type="text" name="query" placeholder="Search..." class="search-input">
+                <button type="submit" class="search-button" id="searchBtn">Search</button>
+            </form>
+        </div>
+        {% block results %}{% endblock %}
+    </div>
+
+    </body>
+    <style>
+        @media (max-width: 660px){
+            #searchBtn
+            {
+                margin-left: 0;
+            }
+        }
+    </style>
+{% endblock %}

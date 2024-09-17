@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div id="content">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const apiUrl = 'http://localhost:8000/records/2';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        const contentElement = document.getElementById('content');
+                        contentElement.innerHTML = `<p>Artist: ${data.artist}</p><p>Title: ${data.title}</p><p>Description: ${data.description}</p><p>Image: ${data.image}</p><p>Price: ${data.price}</p><p>Barcode: ${data.barcode}</p>`;
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            });
+        </script>
+    </div>
+{% endblock %}

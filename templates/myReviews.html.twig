@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1JkBflFhkp6K7N4" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('reviews.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('myReviews.css') }}">
+    </head>
+    <body>
+    <div id="myReviewsList">
+        <ul class="commentList">
+            {% if form1 is defined %}
+                <div id="reviewForm">
+                    <form method="post">
+                        <div class="formField">
+                            <label for="{{ form1.rating.vars.id }}">Rating:</label>
+                            <div class="rating-input">
+                                <button type="button" onclick="changeRating(-1)" class="rating-button">-</button>
+                                <input class="ratingBox" type="text" id="{{ form1.rating.vars.id }}" name="{{ form1.rating.vars.full_name }}"
+                                       min="1" max="5" step="1" value="{{ form1.rating.vars.value }}" readonly>
+                                <button type="button" onclick="changeRating(1)" class="rating-button">+</button>
+                            </div>
+                        </div>
+                        <div class="formField">{{ form_row(form1.comments) }}</div>
+                        <div class="formField">{{ form_row(form1._token) }} {# Add CSRF token #}</div>
+                        <div class="formField">{{ form_row(form1.save) }}</div>
+                        <script>
+                            function changeRating(delta) {
+                                var input = document.getElementById('{{ form1.rating.vars.id }}');
+                                var currentValue = parseInt(input.value, 10) || 1;
+                                var newValue = Math.min(5, Math.max(1, currentValue + delta));
+                                input.value = newValue;
+                            }
+                        </script>
+                    </form>
+                </div>
+            {% endif %}
+            {% set index = -1 %}
+            {% set index2 = -1 %}
+            {% for review in reviews %}
+                {% set index = index+1 %}
+                {% set index2 = index2+1 %}
+                <li class="comment">
+                    <div class="user-info">
+                        <img src="{{ asset('images/userpfp.jpg') }}" alt="User Picture" class="user-picture">
+                        <div class="user-details">
+                            <p class="username">{{ app.user.username }}</p>
+                            <p class="created-at">{{ review.createdAt|date('Y-m-d H:i:s') }}</p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <p class="rating">Rating: {{ review.rating }}</p>
+                        <p class="comments">{{ review.comments }}</p>
+                    </div>
+                    <div>
+                        <p>{{ films[index].name }}</p>
+                    </div>
+                </li>
+                <div id="buttons">
+                    <a id="edit" class="button" href="{{ path('editReview', {'id': reviews[index].id}) }}">Edit</a>
+                    <a id = "delete" class="button" href="{{ path('deleteReview', {'id': reviews[index].id}) }}">Delete</a>
+                </div>
+            {% endfor %}
+        </ul>
+        {% if app.user.username == "Admin" %}
+            {% for film in approvalFilms %}
+                {% if film.imagePath %}
+                    <div>
+                        <img src="{{ asset('images/' ~ film.imagePath) }}" alt="Film Image" id="filmImg">
+                    </div>
+                {% endif %}
+                <div class="filmStuff">
+                    <p>Title: {{ film.name }}</p>
+                    <p>Description: {{ film.description }}</p>
+                    <p>Director: {{ film.director }}</p>
+                    <p>Running time: {{ film.runningTime }}</p>
+                    <p>Cast: {{ film.cast }}</p>
+                </div>
+                <div id="buttons">
+                    <a id="edit" class="button" href="{{ path('approveFilm', {'id': film.id}) }}">Approve</a>
+                    <a id="delete" class="button" href="{{ path('declineFilm', {'id': film.id}) }}">Decline</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    </body>
+    <style>
+        .comment{
+            width: auto;
+        }
+        @media (max-width: 900px) {
+            .comment{
+                margin-left: -100px;
+                width: 500px;
+            }
+            #buttons{
+                margin-left: -100px;
+            }
+        }
+        @media (max-width: 660px) {
+            .comment{
+                display: block;
+                width: auto;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpdHOsNUVb/tpCThFIbB0C2tujLkNqI6VxH7PHa6jtP1I2xpg" crossorigin="anonymous"></script>
+{% endblock %}

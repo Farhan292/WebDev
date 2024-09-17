@@ -1,0 +1,56 @@
+{% extends 'film.html.twig' %}
+
+{% block results %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div class="search-results">
+        {% if films is not empty %}
+            <h2>Search Results:</h2>
+            <ul id="resultsLists">
+                {% for film in films %}
+                    {% if film.approved == 1 %}
+                        <li><a href="{{ path('filmShow', {'filmName': film.name}) }}">{{ film.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+        <p id = "addFilmP">Can't find the film you're looking for? <a id = "addFilmLink" href="{{ path('addFilm') }}">Click here to add a film</a><p>
+    </div>
+    </body>
+    <style>
+        h2{
+            text-align: center;
+            color: #888888;
+            margin-top: 10px;
+        }
+        body{
+            margin: 0;
+        }
+        #resultsLists li {
+            padding: 20px;
+            list-style: none;
+            border: 1px solid grey;
+            border-radius: 10px;
+            margin-top: 10px;
+            width: 80%;
+            text-align: center;
+            cursor: pointer;
+            background-color: rgb(24,24,24);
+            margin-left: -16px;
+            margin-left: 10%;
+        }
+        #resultsLists li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+        }
+        #resultsLists li:hover {
+            background-color: #555;
+        }
+    </style>
+{% endblock %}

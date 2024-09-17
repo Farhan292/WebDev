@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ asset('addFilm.css') }}">
+    </head>
+    <form method="post" enctype="multipart/form-data" id="filmForm">
+        <div class="formField">{{ form_row(form.name) }}</div>
+        <div class="formField"><button type="button" id="autoFill">Autofill</button> Powered by - OMDB & TheMovieDb API</div>
+        <div class="formField" id="descBox">{{ form_row(form.description) }}</div>
+        <div class="formField">{{ form_row(form.director) }}</div>
+        <div class="formField">{{ form_row(form.running_time) }}</div>
+        <div class="formField">{{ form_row(form.cast) }}</div>
+        <div class="formField">{{ form_row(form.image_path) }}</div>
+        <div class="formField">{{ form_row(form.save, {'attr': {'class': 'addFilmBtn'}}) }}</div>
+
+        {{ form_rest(form) }}
+    </form>
+    <p>After submitting a request to add a film, your film will need to be approved before it becomes available to review.</p>
+
+    <script>
+        document.getElementById('autoFill').addEventListener('click', function() {
+            var filmName = document.getElementById('{{ form.name.vars.id }}').value;
+            var url1 = "{{ path('autoFill') }}?filmName=" + encodeURIComponent(filmName);
+            var url2 = "{{ path('autoFill2') }}?filmName=" + encodeURIComponent(filmName);
+
+            // First AJAX request
+            var xhr1 = new XMLHttpRequest();
+            xhr1.open('GET', url1, true);
+            xhr1.onload = function() {
+                if (xhr1.status === 200) {
+                    var response = JSON.parse(xhr1.responseText);
+                    document.getElementById('{{ form.description.vars.id }}').value = response.description || '';
+                    document.getElementById('{{ form.name.vars.id }}').value = response.name || '';
+
+                    // Second AJAX request
+                    var xhr2 = new XMLHttpRequest();
+                    xhr2.open('GET', url2, true);
+                    xhr2.onload = function() {
+                        if (xhr2.status === 200) {
+                            var response2 = JSON.parse(xhr2.responseText);
+                            var runtimeValue = response2.runtime ? response2.runtime.match(/\d+/)[0] : '';
+                            document.getElementById('{{ form.running_time.vars.id }}').value = runtimeValue || '';
+                            document.getElementById('{{ form.director.vars.id }}').value = response2.director || ''; // Ensure this line is correctly accessing the director property
+                            document.getElementById('{{ form.cast.vars.id }}').value = response2.cast || '';
+                        }
+                    };
+                    xhr2.send();
+                }
+            };
+            xhr1.send();
+        });
+    </script>
+    <style>
+        #autoFill {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ asset('reviews.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('showFilm.css') }}">
+    </head>
+    <body>
+        <h1 class="headings">{{ film.name }}</h1>
+        <div class="row" id="filmBox">
+            {% if film.getImagePath() is not null %}
+                <p>
+                    <img src="{{ asset('images/' ~ film.getImagePath()) }}" alt="{{ film.name }} Image" id="filmImg">
+                </p>
+            {% endif %}
+            <p id="filmDesc">{{ film.description }}</p>
+            <ul id="filmList">
+                <li><a href="{{ path('filmShow', {'filmName': fourFilms[0].name}) }}">{{ fourFilms[0].name }}</a></li>
+                <li><a href="{{ path('filmShow', {'filmName': fourFilms[1].name}) }}">{{ fourFilms[1].name }}</a></li>
+                <li><a href="{{ path('filmShow', {'filmName': fourFilms[2].name}) }}">{{ fourFilms[2].name }}</a></li>
+                <li><a href="{{ path('filmShow', {'filmName': fourFilms[3].name}) }}">{{ fourFilms[3].name }}</a></li>
+            </ul>
+        </div>
+        <div class="row" id="filmInfo">
+            <p class="filmInfoItems">Duration: {{ film.runningTime }} minutes</p>
+            <p class="filmInfoItems">Cast: {{ film.cast }}</p>
+            <p class="filmInfoItems">Director: {{ film.director }}</p>
+            <p class="filmInfoItems">Date: {{ date }}</p>
+
+        </div>
+        <h2 class="headings">Reviews</h2>
+            {% if not app.user %}
+                <div>
+                    <p id="signInMsg">Sign in to add your own review</p>
+                </div>
+            {% else %}
+                    <div id="reviewForm">
+                        <h2>Add review</h2>
+                        <form method="post">
+                            <div class="formField">
+                                <label for="{{ form.rating.vars.id }}">Rating:</label>
+                                <div class="rating-input" id="starRating">
+                                    {% for i in 1..5 %}
+                                        <span class="star" data-value="{{ i }}">&#9733;</span>
+                                    {% endfor %}
+                                    <input type="hidden" id="{{ form.rating.vars.id }}" name="{{ form.rating.vars.full_name }}" value="{{ form.rating.vars.value }}">
+                                </div>
+                            </div>
+
+                            <script>
+                                const stars = document.querySelectorAll('#starRating .star');
+                                let selectedRating = 0;
+
+                                stars.forEach((star, index) => {
+                                    star.addEventListener('mouseover', () => {
+                                        highlightStars(index + 1);
+                                    });
+
+                                    star.addEventListener('mouseout', () => {
+                                        highlightStars(selectedRating);
+                                    });
+
+                                    star.addEventListener('click', () => {
+                                        selectedRating = index + 1;
+                                        document.getElementById('{{ form.rating.vars.id }}').value = selectedRating;
+                                    });
+                                });
+
+                                function highlightStars(rating) {
+                                    stars.forEach((star, index) => {
+                                        if (index < rating) {
+                                            star.classList.add('filled');
+                                        } else {
+                                            star.classList.remove('filled');
+                                        }
+                                    });
+                                }
+                            </script>
+                            <div class="formField">{{ form_row(form.comments) }}</div>
+                            <div class="formField">{{ form_row(form._token) }} {# Add CSRF token #}</div>
+                            <div class="formField">{{ form_row(form.save) }}</div>
+                            <script>
+                                function changeRating(delta) {
+                                    var input = document.getElementById('{{ form.rating.vars.id }}');
+                                    var currentValue = parseInt(input.value, 10) || 1;
+                                    var newValue = Math.min(5, Math.max(1, currentValue + delta));
+                                    input.value = newValue;
+                                }
+                            </script>
+                        </form>
+                    </div>
+            {% endif %}
+            {% if reviews|length > 0 %}
+                <ul class="commentList">
+                    {% set index = -1 %}
+                    {% for review in reviews %}
+                        {% set index = index+1 %}
+                        <li class="comment">
+                            <div class="user-info">
+                                <img src="{{ asset('images/userpfp.jpg') }}" alt="User Picture" class="user-picture">
+                                <div class="user-details">
+                                    <p class="username">{{ usernames[index] }}</p>
+                                    <p class="created-at">{{ review.createdAt|date('Y-m-d H:i:s') }}</p>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                <p class="rating">Rating: {{ review.rating }}</p>
+                                {% set ratingImagePrefix = 'images/' ~ review.rating ~ 'star.png' %}
+                                <img src="{{ asset(ratingImagePrefix) }}" id="ratingImg" alt="rating">
+                                <p class="comments">{{ review.comments }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="commentList">No reviews available for this film.</p>
+            {% endif %}
+    </body>
+    <style>
+        #filmList{
+            margin-top: -20px;
+            width: 300px;
+        }
+        #filmList li {
+            height: 20px;
+            padding: 30px;
+            list-style: none;
+            border: 1px solid grey;
+            border-radius: 10px;
+            margin: 10px;
+            width: 450px;
+            text-align: center;
+            cursor: pointer;
+            background-color: rgb(24,24,24);
+        }
+        #filmList li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            margin-top: -10px;
+        }
+        #filmList li:hover {
+            background-color: #555;
+        }
+        @media (max-width: 1647px) {
+            #filmBox{
+                justify-content: center;
+            }
+        }
+        #filmInfo{
+            margin-left: -100px;
+        }
+        #starRating .star {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        #starRating .star.filled {
+            color: #FFD700;
+        }
+        .formField{
+            text-align: center;
+        }
+        #starRating{
+            justify-content: center;
+        }
+        .commentList{
+            justify-content: center;
+            text-align: center;
+            margin-left: auto;
+        }
+        @media (max-width: 808px) {
+            .commentList{
+                justify-content: center;
+                text-align: center;
+                margin-left: -50px;
+            }
+            #filmList{
+                margin-left: -210px;
+            }
+        }
+        @media (max-width: 891px) and (min-width: 808px){
+            #filmBox{
+                display: block;
+            }
+        }
+    </style>
+{% endblock %}
